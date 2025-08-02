@@ -1,0 +1,326 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;700&display=swap');
+
+body {
+    background: #101010;
+    color: #00ff41;
+    font-family: 'Fira Mono', 'Consolas', 'Courier New', monospace;
+    margin: 0;
+    padding: 0;
+    letter-spacing: 0.5px;
+}
+
+header, main, section {
+    max-width: 700px;
+    margin: 2em auto;
+    padding: 2em;
+    background: rgba(16, 16, 16, 0.98);
+    border-radius: 10px;
+    box-shadow: 0 0 24px #00ff4160, 0 0 2px #00ff41;
+    border: 1.5px solid #00ff41;
+}
+
+h1, h2 {
+    color: #00ff41;
+    text-align: center;
+    text-shadow: 0 0 8px #00ff41, 0 0 2px #00ff41;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+input[type="text"], button {
+    font-size: 1.1em;
+    padding: 0.4em 0.7em;
+    margin: 0.2em;
+    border-radius: 4px;
+    border: 1.5px solid #00ff41;
+    background: #181818;
+    color: #00ff41;
+    font-family: inherit;
+    box-shadow: 0 0 8px #00ff4160 inset;
+    outline: none;
+    transition: border 0.2s, box-shadow 0.2s;
+}
+
+input[type="text"]:focus {
+    border: 1.5px solid #fff;
+    box-shadow: 0 0 12px #00ff41;
+    background: #222;
+}
+
+button {
+    background: #101010;
+    color: #00ff41;
+    border: 1.5px solid #00ff41;
+    cursor: pointer;
+    font-weight: bold;
+    text-shadow: 0 0 4px #00ff41;
+    box-shadow: 0 0 8px #00ff41;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+
+button:hover {
+    background: #00ff41;
+    color: #101010;
+    box-shadow: 0 0 16px #00ff41, 0 0 2px #00ff41;
+}
+
+.lock-box {
+    width: 2em;
+    text-align: center;
+    font-weight: bold;
+    background: #181818;
+    color: #00ff41;
+    border: 1.5px solid #00ff41;
+    box-shadow: 0 0 6px #00ff41;
+}
+
+.lock-input-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1em;
+    margin-top: 1em;
+}
+
+.lock-boxes-row {
+    display: flex;
+    gap: 0.5em;
+    justify-content: center;
+    margin-bottom: 0.5em;
+}
+
+.gimble-menace {
+    animation: menace-glow 1.2s infinite alternate;
+    background: #c80000 !important;
+    color: #00ff41 !important;
+    border: 2px solid #00ff41 !important;
+    box-shadow: 0 0 10px 2px #00ff41, 0 0 20px 4px #00ff41;
+    font-weight: bold;
+    text-shadow: 0 0 8px #00ff41, 0 0 2px #fff;
+    transition: box-shadow 0.5s, background 0.5s, color 0.5s, text-shadow 0.5s;
+    position: relative;
+    opacity: 1;
+    z-index: 2001;
+}
+
+.morphing-gimble {
+    font-family: 'Fira Mono', 'Consolas', 'monospace';
+    letter-spacing: 0.04em;
+    background: #1a1a1a !important;
+    color: #00ff41 !important;
+    border: 2px solid #333 !important;
+    box-shadow: 0 0 0px 0px #00ff41 !important;
+    text-shadow: 0 0 2px #00ff41, 0 0 1px #fff !important;
+    opacity: 1;
+    z-index: 2001;
+    transition: all 5s cubic-bezier(.22,1.61,.36,1);
+}
+
+#unlock-progress {
+    margin-top: 0.5em;
+    width: 200px;
+    height: 4px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    overflow: hidden;
+    z-index: 2001;
+    position: relative;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+#unlock-progress .progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #00ff41, #00aa2a);
+    border-radius: 2px;
+    transition: width 0.3s cubic-bezier(.22,1.61,.36,1);
+    box-shadow: 0 0 8px #00ff41;
+}
+
+.hacker-glitch {
+    font-family: 'Fira Mono', 'Consolas', 'monospace';
+    letter-spacing: 0.04em;
+    animation: glitchy-text 1.2s infinite steps(2, end);
+}
+
+@keyframes glitchy-text {
+    0% { text-shadow: 1px 0 #00ff41, -1px 0 #fff, 0 0 6px #00ff41; }
+    20% { text-shadow: -1px 0 #00ff41, 1px 0 #fff, 0 0 6px #00ff41; }
+    40% { text-shadow: 1px 1px #00ff41, -1px -1px #fff, 0 0 6px #00ff41; }
+    60% { text-shadow: -1px 1px #00ff41, 1px -1px #fff, 0 0 6px #00ff41; }
+    80% { text-shadow: 0 0 6px #00ff41, 0 0 2px #fff; }
+    100% { text-shadow: 1px 0 #00ff41, -1px 0 #fff, 0 0 6px #00ff41; }
+}
+
+#hacker-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.85);
+    pointer-events: none;
+    z-index: 2000;
+    opacity: 0;
+    transition: opacity 1.2s;
+}
+
+#hacker-overlay .scanlines {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: repeating-linear-gradient(
+        to bottom,
+        rgba(0,255,65,0.07) 0px,
+        rgba(0,255,65,0.07) 2px,
+        transparent 2px,
+        transparent 6px
+    );
+    pointer-events: none;
+    z-index: 1001;
+    mix-blend-mode: lighten;
+}
+
+@keyframes menace-glow {
+    0% {
+        box-shadow: 0 0 10px 2px #00ff41, 0 0 20px 4px #00ff41;
+    }
+    100% {
+        box-shadow: 0 0 20px 4px #00ff41, 0 0 30px 8px #00ff41;
+    }
+}
+
+#gimble-textbox {
+    font-family: 'Fira Mono', 'Consolas', 'monospace';
+    letter-spacing: 0.02em;
+}
+
+.glitch-in {
+    animation: glitch-entrance 1s ease-out;
+}
+
+@keyframes glitch-entrance {
+    0% {
+        opacity: 0;
+        transform: translateY(30px) skewX(-5deg);
+        filter: blur(4px) hue-rotate(180deg);
+        text-shadow: 
+            8px 0 #ff0000, 
+            -8px 0 #00ffff, 
+            4px 4px #ff00ff,
+            -4px -4px #00ff00,
+            0 0 20px currentColor;
+    }
+    15% {
+        opacity: 0.2;
+        transform: translateY(-10px) skewX(3deg);
+        filter: blur(3px) hue-rotate(90deg);
+        text-shadow: 
+            -6px 0 #ff0000, 
+            6px 0 #00ffff, 
+            -3px 3px #ff00ff,
+            3px -3px #00ff00,
+            0 0 18px currentColor;
+    }
+    25% {
+        opacity: 0.4;
+        transform: translateY(15px) skewX(-8deg);
+        filter: blur(2px) hue-rotate(270deg);
+        text-shadow: 
+            10px 0 #ff0000, 
+            -10px 0 #00ffff, 
+            5px 5px #ff00ff,
+            -5px -5px #00ff00,
+            0 0 15px currentColor;
+    }
+    35% {
+        opacity: 0.6;
+        transform: translateY(-5px) skewX(2deg);
+        filter: blur(1.5px) hue-rotate(45deg);
+        text-shadow: 
+            -4px 0 #ff0000, 
+            4px 0 #00ffff, 
+            -2px 2px #ff00ff,
+            2px -2px #00ff00,
+            0 0 12px currentColor;
+    }
+    50% {
+        opacity: 0.8;
+        transform: translateY(5px) skewX(-1deg);
+        filter: blur(1px) hue-rotate(315deg);
+        text-shadow: 
+            3px 0 #ff0000, 
+            -3px 0 #00ffff, 
+            1px 1px #ff00ff,
+            -1px -1px #00ff00,
+            0 0 8px currentColor;
+    }
+    65% {
+        opacity: 0.9;
+        transform: translateY(-2px) skewX(0.5deg);
+        filter: blur(0.5px) hue-rotate(180deg);
+        text-shadow: 
+            -2px 0 #ff0000, 
+            2px 0 #00ffff, 
+            -1px 1px #ff00ff,
+            1px -1px #00ff00,
+            0 0 6px currentColor;
+    }
+    80% {
+        opacity: 0.95;
+        transform: translateY(1px) skewX(-0.2deg);
+        filter: blur(0.2px) hue-rotate(90deg);
+        text-shadow: 
+            1px 0 #ff0000, 
+            -1px 0 #00ffff, 
+            0.5px 0.5px #ff00ff,
+            -0.5px -0.5px #00ff00,
+            0 0 3px currentColor;
+    }
+    90% {
+        opacity: 0.98;
+        transform: translateY(-0.5px) skewX(0.1deg);
+        filter: blur(0.1px) hue-rotate(0deg);
+        text-shadow: 
+            0.5px 0 #ff0000, 
+            -0.5px 0 #00ffff, 
+            0 0 2px currentColor;
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) skewX(0deg);
+        filter: blur(0px) hue-rotate(0deg);
+        text-shadow: none;
+    }
+}
+
+.confetti-piece {
+    transform-origin: center;
+}
+
+@keyframes confetti-fall {
+    0% {
+        transform: translateY(-10px) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+#hint-container {
+    text-align: center;
+}
+
+#hint-text {
+    animation: fadeIn 0.7s;
+    color: #fff;
+    background: #00ff4120;
+    border: 1px solid #00ff41;
+    border-radius: 6px;
+    padding: 0.7em 1em;
+    margin-top: 1em;
+    text-shadow: 0 0 6px #00ff41;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
