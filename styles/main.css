@@ -1,5 +1,30 @@
 @import url('https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;700&display=swap');
 
+:root {
+    --main-color: #00ff41;
+    --shadow-color: #00ff41;
+}
+body.full-moon {
+    background: #000000;
+    color: var(--main-color);
+}
+body.full-moon header, body.full-moon main, body.full-moon section {
+    box-shadow: 0 0 24px var(--shadow-color)60, 0 0 2px var(--shadow-color);
+    border: 1.5px solid var(--main-color);
+    background: rgba(0, 0, 0, 0.98);
+}
+body.full-moon h1, body.full-moon h2 {
+    color: var(--main-color);
+    text-shadow: 0 0 8px var(--main-color), 0 0 2px var(--main-color);
+}
+input, button, .lock-box {
+    border-color: var(--main-color) !important;
+    color: var(--main-color) !important;
+    box-shadow: 0 0 8px var(--main-color)60 inset !important;
+}
+
+
+
 body {
     background: #101010;
     color: #00ff41;
@@ -122,7 +147,7 @@ button:hover {
     box-shadow: 0 0 0px 0px #00ff41 !important;
     text-shadow: 0 0 2px #00ff41, 0 0 1px #fff !important;
     opacity: 1;
-    z-index: 2001;
+    z-index: 3001 !important;
     transition: all 5s cubic-bezier(.22,1.61,.36,1);
 }
 
@@ -133,7 +158,7 @@ button:hover {
     background: rgba(255,255,255,0.1);
     border-radius: 2px;
     overflow: hidden;
-    z-index: 2001;
+    z-index: 3001 !important;
     position: relative;
     transition: opacity 0.3s ease, transform 0.3s ease;
 }
@@ -167,7 +192,7 @@ button:hover {
     top: 0; left: 0; width: 100vw; height: 100vh;
     background: rgba(0,0,0,0.85);
     pointer-events: none;
-    z-index: 2000;
+    z-index: 3000 !important;
     opacity: 0;
     transition: opacity 1.2s;
 }
@@ -199,6 +224,17 @@ button:hover {
 #gimble-textbox {
     font-family: 'Fira Mono', 'Consolas', 'monospace';
     letter-spacing: 0.02em;
+    z-index: 4000 !important;
+    position: relative;
+    max-width: 720px;
+    margin: 1.5rem auto;
+    padding: 1.2rem;
+    background: #001a00 !important;
+    border: 2px solid #00ff41 !important;
+    color: #00ff41 !important;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 0 15px rgba(0,255,65,0.3) !important;
 }
 
 .glitch-in {
@@ -300,13 +336,20 @@ button:hover {
     }
 }
 
+/* ===== CONFETTI ===== */
 .confetti-piece {
-    transform-origin: center;
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background: #00ff41;
+    top: 0;
+    z-index: 4002;
+    opacity: 0;
 }
 
 @keyframes confetti-fall {
     0% {
-        transform: translateY(-10px) rotate(0deg);
+        transform: translateY(-100px) rotate(0deg);
         opacity: 1;
     }
     100% {
@@ -334,3 +377,279 @@ button:hover {
     from { opacity: 0; }
     to { opacity: 1; }
 }
+
+/* ===== ADDITIONAL STYLES ===== */
+#opening-textbox {
+    max-width: 700px;
+    margin: 2em auto;
+    padding: 2em;
+    background: rgba(16, 16, 16, 0.98);
+    border-radius: 10px;
+    box-shadow: 0 0 24px #00ff4160, 0 0 2px #00ff41;
+    border: 1.5px solid #00ff41;
+    color: #00ff41;
+    text-align: center;
+    font-family: 'Fira Mono', 'Consolas', 'Courier New', monospace;
+}
+
+#gimble-message {
+    color: #40ff00;
+    font-weight: bold;
+    margin-top: 0.5em;
+    text-align: center;
+    min-height: 1.5em;
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+#gimble-message.show {
+    opacity: 1;
+}
+
+#toggle-fullmoon-btn {
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+    z-index: 4000;
+    background: #111;
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.06);
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'Fira Mono', monospace;
+}
+
+.flash-msg {
+    position: fixed;
+    right: 10px;
+    bottom: 60px;
+    z-index: 4001;
+    background: rgba(0,0,0,0.75);
+    color: #ff003c;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-weight: 700;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.45s, transform 0.45s;
+}
+
+/* ===== FULL MOON SPECIFIC OVERRIDES ===== */
+body.full-moon {
+    --main-color: #ff003c !important;
+    --shadow-color: #ff003c !important;
+}
+
+body.full-moon header,
+body.full-moon main, 
+body.full-moon section,
+body.full-moon #opening-textbox {
+    box-shadow: 0 0 24px #ff003c60, 0 0 2px #ff003c !important;
+    border: 1.5px solid #ff003c !important;
+}
+
+body.full-moon h1,
+body.full-moon h2 {
+    color: #ff003c !important;
+    text-shadow: 0 0 8px #ff003c, 0 0 2px #ff003c !important;
+}
+
+body.full-moon input[type="text"],
+body.full-moon button:not(.glitch-button):not(.morphing-gimble),
+body.full-moon .lock-box {
+    border-color: #ff003c !important;
+    color: #ff003c !important;
+    box-shadow: 0 0 8px #ff003c60 inset !important;
+}
+
+body.full-moon button:not(.glitch-button):not(.morphing-gimble) {
+    border-color: #ff003c !important;
+    color: #ff003c !important;
+    box-shadow: 0 0 8px #ff003c !important;
+}
+
+body.full-moon button:not(.glitch-button):not(.morphing-gimble):hover {
+    background: #ff003c !important;
+    color: #101010 !important;
+    box-shadow: 0 0 16px #ff003c, 0 0 2px #ff003c !important;
+}
+
+body.full-moon #hacker-overlay .scanlines {
+    background: repeating-linear-gradient(
+        to bottom,
+        rgba(255,0,60,0.07) 0px,
+        rgba(255,0,60,0.07) 2px,
+        transparent 2px,
+        transparent 6px
+    ) !important;
+}
+
+body.full-moon #opening-textbox {
+    color: #ff003c !important;
+}
+
+/* ===== GLITCH BUTTON STYLES ===== */
+.glitch-button {
+    background: #c80000 !important;
+    color: #00ff41 !important;
+    border: 2px solid #00ff41 !important;
+    box-shadow: 0 0 10px 2px #00ff41, 0 0 20px 4px #00ff41 !important;
+    text-shadow: 0 0 8px #00ff41, 0 0 2px #fff !important;
+    position: relative !important;
+    z-index: 3001 !important;
+    overflow: visible !important;
+    animation: 
+        glitch-shake 0.8s infinite,
+        glitch-distort 1.2s infinite !important;
+}
+
+/* Pseudo-elements for screen tearing effect */
+.glitch-button::before,
+.glitch-button::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #c80000;
+    clip: rect(0, 0, 0, 0);
+    opacity: 0.8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    border: 2px solid #00ff41;
+    box-sizing: border-box;
+    font-family: 'Fira Mono', 'Consolas', 'monospace';
+    font-weight: bold;
+    padding: 0.4em 0.7em;
+}
+
+.glitch-button::before {
+    animation: glitch-anim-1 3s infinite linear alternate-reverse;
+    left: 2px;
+    text-shadow: 1px 0 #ff0000;
+    clip: rect(0, 900px, 0, 0);
+}
+
+.glitch-button::after {
+    animation: glitch-anim-2 2.5s infinite linear alternate-reverse;
+    left: -2px;
+    text-shadow: -1px 0 #0000ff;
+    clip: rect(0, 900px, 0, 0);
+}
+
+/* Slower, less intense shake animation */
+@keyframes glitch-shake {
+    0%, 100% { transform: translateX(0) translateY(0); }
+    25% { transform: translateX(-0.3px) translateY(0.2px); }
+    50% { transform: translateX(0.3px) translateY(-0.2px); }
+    75% { transform: translateX(-0.1px) translateY(0.1px); }
+}
+
+/* Slower color distortion */
+@keyframes glitch-distort {
+    0%, 100% { 
+        filter: brightness(1) hue-rotate(0deg);
+        opacity: 1;
+    }
+    33% { 
+        filter: brightness(1.1) hue-rotate(5deg);
+        opacity: 0.95;
+    }
+    66% { 
+        filter: brightness(0.95) hue-rotate(-5deg);
+        opacity: 1;
+    }
+}
+
+/* Screen tearing animations */
+@keyframes glitch-anim-1 {
+    0% { clip: rect(10px, 9999px, 15px, 0); }
+    10% { clip: rect(5px, 9999px, 20px, 0); }
+    20% { clip: rect(15px, 9999px, 10px, 0); }
+    30% { clip: rect(0px, 9999px, 25px, 0); }
+    40% { clip: rect(20px, 9999px, 5px, 0); }
+    50% { clip: rect(8px, 9999px, 18px, 0); }
+    60% { clip: rect(12px, 9999px, 22px, 0); }
+    70% { clip: rect(3px, 9999px, 28px, 0); }
+    80% { clip: rect(18px, 9999px, 8px, 0); }
+    90% { clip: rect(7px, 9999px, 23px, 0); }
+    100% { clip: rect(14px, 9999px, 12px, 0); }
+}
+
+@keyframes glitch-anim-2 {
+    0% { clip: rect(25px, 9999px, 5px, 0); }
+    10% { clip: rect(30px, 9999px, 0px, 0); }
+    20% { clip: rect(20px, 9999px, 15px, 0); }
+    30% { clip: rect(35px, 9999px, 10px, 0); }
+    40% { clip: rect(15px, 9999px, 25px, 0); }
+    50% { clip: rect(28px, 9999px, 12px, 0); }
+    60% { clip: rect(22px, 9999px, 18px, 0); }
+    70% { clip: rect(33px, 9999px, 7px, 0); }
+    80% { clip: rect(18px, 9999px, 22px, 0); }
+    90% { clip: rect(27px, 9999px, 13px, 0); }
+    100% { clip: rect(12px, 9999px, 28px, 0); }
+}
+
+/* Darken button after it's pressed */
+#unlock-btn.pressed {
+    opacity: 0.3 !important;
+    filter: brightness(0.5) !important;
+    pointer-events: none !important;
+    z-index: 2999 !important;
+}
+
+/* Full moon mode glitch button should still have green text */
+body.full-moon .glitch-button {
+    color: #00ff41 !important;
+    border: 2px solid #00ff41 !important;
+    box-shadow: 0 0 10px 2px #00ff41, 0 0 20px 4px #00ff41 !important;
+    text-shadow: 0 0 8px #00ff41, 0 0 2px #fff !important;
+}
+
+body.full-moon .glitch-button::before,
+body.full-moon .glitch-button::after {
+    color: #00ff41 !important;
+    border: 2px solid #00ff41 !important;
+}
+
+/* Make sure unlock process elements are above dark overlay */
+.morphing-gimble,
+#unlock-progress,
+.glitch-button {
+    z-index: 3001 !important;
+}
+
+/* Make reward box green and above everything */
+#gimble-textbox {
+    background: #001a00 !important;
+    border: 2px solid #00ff41 !important;
+    color: #00ff41 !important;
+    box-shadow: 0 0 15px rgba(0,255,65,0.3) !important;
+}
+
+#gimble-textbox a {
+    color: #00ffff !important;
+}
+
+#gimble-textbox img {
+    border-radius: 6px;
+    box-shadow: 0 0 10px rgba(0,255,65,0.3);
+}
+
+/* Full moon mode reward box should still be green */
+body.full-moon #gimble-textbox {
+    background: #001a00 !important;
+    border: 2px solid #00ff41 !important;
+    color: #00ff41 !important;
+    box-shadow: 0 0 15px rgba(0,255,65,0.3) !important;
+}
+
+body.full-moon #gimble-textbox a {
+    color: #00ffff !important;
+}
+
