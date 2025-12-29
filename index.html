@@ -4,621 +4,1089 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to my freaky website bro</title>
-    <link rel="stylesheet" href="styles/main.css?v=3">
+    <style>
+        /* ===== MAIN CSS ===== */
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;700&display=swap');
+        
+        :root {
+            --main-color: #00ff41;
+            --shadow-color: #00ff41;
+        }
+        
+        body {
+            background: #101010;
+            color: #00ff41;
+            font-family: 'Fira Mono', 'Consolas', 'Courier New', monospace;
+            margin: 0;
+            padding: 1rem;
+            letter-spacing: 0.5px;
+            transition: all 0.5s ease;
+        }
+        
+        body.full-moon {
+            background: #0a0000 !important;
+        }
+        
+        body.full-moon * {
+            border-color: #ff003c !important;
+            color: #ff003c !important;
+        }
+        
+        body.full-moon h1 {
+            text-shadow: 0 0 8px #ff003c !important;
+        }
+        
+        body.full-moon header,
+        body.full-moon main,
+        body.full-moon section,
+        body.full-moon #opening-textbox,
+        body.full-moon .puzzle-step {
+            box-shadow: 0 0 24px #ff003c60, 0 0 2px #ff003c !important;
+            border: 1.5px solid #ff003c !important;
+        }
+        
+        body.full-moon input[type="text"],
+        body.full-moon button:not(.glitch-button):not(.morphing-gimble),
+        body.full-moon .lock-box {
+            box-shadow: 0 0 8px #ff003c60 inset !important;
+            border: 1.5px solid #ff003c !important;
+        }
+        
+        body.full-moon button:not(.glitch-button):not(.morphing-gimble) {
+            box-shadow: 0 0 8px #ff003c !important;
+        }
+        
+        body.full-moon button:not(.glitch-button):not(.morphing-gimble):hover {
+            background: #ff003c !important;
+            color: #101010 !important;
+            box-shadow: 0 0 16px #ff003c, 0 0 2px #ff003c !important;
+        }
+        
+        body.full-moon #hacker-overlay .scanlines {
+            background: repeating-linear-gradient(
+                to bottom,
+                rgba(255,0,60,0.07) 0px,
+                rgba(255,0,60,0.07) 2px,
+                transparent 2px,
+                transparent 6px
+            ) !important;
+        }
+        
+        #matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        header, main, section {
+            max-width: 700px;
+            margin: 2em auto;
+            padding: 2em;
+            background: rgba(16, 16, 16, 0.98);
+            border-radius: 10px;
+            box-shadow: 0 0 24px #00ff4160, 0 0 2px #00ff41;
+            border: 1.5px solid #00ff41;
+            transition: all 0.5s ease;
+        }
+        
+        h1 {
+            color: #00ff41;
+            text-align: center;
+            text-shadow: 0 0 8px #00ff41, 0 0 2px #00ff41;
+            font-weight: bold;
+            letter-spacing: 2px;
+            transition: all 0.5s ease;
+        }
+        
+        /* ===== INPUT FIX: Prevent text overflow ===== */
+        input[type="text"] {
+            font-size: 1.1em;
+            padding: 0.4em 0.7em;
+            margin: 0.2em;
+            border-radius: 4px;
+            border: 1.5px solid #00ff41;
+            background: #181818;
+            color: #00ff41;
+            font-family: inherit;
+            box-shadow: 0 0 8px #00ff4160 inset;
+            outline: none;
+            transition: all 0.3s ease;
+            width: 100%;
+            box-sizing: border-box;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        input[type="text"]:focus {
+            border: 1.5px solid #fff;
+            box-shadow: 0 0 12px #00ff41;
+            background: #222;
+        }
+        
+        /* ===== FIXED FLASH MESSAGE STYLING ===== */
+        .flash-msg {
+            position: relative !important;
+            left: auto !important;
+            right: auto !important;
+            bottom: auto !important;
+            top: auto !important;
+            margin: 0.5em auto !important;
+            background: rgba(0,0,0,0.75);
+            color: #ff003c;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-weight: 700;
+            pointer-events: none;
+            opacity: 0;
+            transform: translateY(6px);
+            transition: opacity 0.45s, transform 0.45s;
+            text-align: center;
+            width: fit-content;
+            max-width: 100%;
+            z-index: 10;
+        }
+        
+        .flash-msg.show {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+        
+        button {
+            background: #101010;
+            color: #00ff41;
+            border: 1.5px solid #00ff41;
+            cursor: pointer;
+            font-weight: bold;
+            text-shadow: 0 0 4px #00ff41;
+            box-shadow: 0 0 8px #00ff41;
+            transition: all 0.3s ease;
+            font-size: 1.1em;
+            padding: 0.4em 0.7em;
+            margin: 0.2em;
+            border-radius: 4px;
+            font-family: inherit;
+        }
+        
+        button:hover {
+            background: #00ff41;
+            color: #101010;
+            box-shadow: 0 0 16px #00ff41, 0 0 2px #00ff41;
+        }
+        
+        .lock-box {
+            width: 3em;  /* WIDER BOXES */
+            text-align: center;
+            font-weight: bold;
+            background: #181818;
+            color: #00ff41;
+            border: 1.5px solid #00ff41;
+            box-shadow: 0 0 6px #00ff41;
+            transition: all 0.3s ease;
+            font-size: 1.1em;
+            padding: 0.4em 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .lock-input-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1em;
+            margin-top: 1em;
+        }
+        
+        .lock-boxes-row {
+            display: flex;
+            gap: 0.5em;
+            justify-content: center;
+            margin-bottom: 0.5em;
+        }
+        
+        /* ===== OPENING TEXTBOX ===== */
+        #opening-textbox {
+            max-width: 700px;
+            margin: 2em auto;
+            padding: 2em;
+            background: rgba(16, 16, 16, 0.98);
+            border-radius: 10px;
+            box-shadow: 0 0 24px #00ff4160, 0 0 2px #00ff41;
+            border: 1.5px solid #00ff41;
+            color: #00ff41;
+            text-align: center;
+            transition: all 0.5s ease;
+        }
+        
+        /* Full Moon specific opening text */
+        body.full-moon #opening-textbox .normal-text {
+            display: none;
+        }
+        
+        body.full-moon #opening-textbox .fullmoon-text {
+            display: block;
+        }
+        
+        #opening-textbox .fullmoon-text {
+            display: none;
+        }
+        
+        /* ===== PUZZLE STEPS WITH INDIVIDUAL BOUNDING BOXES ===== */
+        .puzzle-step {
+            max-width: 700px;
+            margin: 1.5em auto;
+            padding: 1.5em;
+            background: rgba(16, 16, 16, 0.98);
+            border-radius: 10px;
+            box-shadow: 0 0 24px #00ff4160, 0 0 2px #00ff41;
+            border: 1.5px solid #00ff41;
+            color: #00ff41;
+            transition: all 0.5s ease;
+            display: none;
+        }
+        
+        .puzzle-step.active {
+            display: block;
+            animation: fadeIn 0.6s ease;
+        }
+        
+        .puzzle-content {
+            margin-bottom: 1.5em;
+            line-height: 1.6;
+        }
+        
+        .puzzle-input-area {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5em;
+            align-items: center;
+            margin-top: 1em;
+        }
+        
+        .puzzle-input-area input {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .congrats-message {
+            margin-top: 1em;
+            padding: 0.8em;
+            background: rgba(0, 255, 65, 0.1);
+            border-radius: 6px;
+            border-left: 3px solid #00ff41;
+            animation: fadeIn 0.8s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* ===== GIMMICK MESSAGE ===== */
+        #gimble-message {
+            color: #ff003c;
+            font-weight: bold;
+            margin-top: 0.5em;
+            text-align: center;
+            min-height: 1.5em;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+        
+        #gimble-message.show {
+            opacity: 1;
+        }
+        
+        /* ===== UNLOCK PROCESS ===== */
+        .morphing-gimble {
+            font-family: 'Fira Mono', 'Consolas', 'monospace';
+            letter-spacing: 0.04em;
+            background: #1a1a1a !important;
+            color: #00ff41 !important;
+            border: 2px solid #333 !important;
+            box-shadow: 0 0 0px 0px #00ff41 !important;
+            text-shadow: 0 0 2px #00ff41, 0 0 1px #fff !important;
+            opacity: 1;
+            z-index: 3001 !important;
+            transition: all 5s cubic-bezier(.22,1.61,.36,1) !important;
+        }
+        
+        #unlock-progress {
+            margin-top: 0.5em;
+            width: 200px;
+            height: 4px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+            overflow: hidden;
+            z-index: 3001 !important;
+            position: relative;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        
+        #unlock-progress .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #00ff41, #00aa2a);
+            border-radius: 2px;
+            transition: width 0.3s cubic-bezier(.22,1.61,.36,1);
+            box-shadow: 0 0 8px #00ff41;
+        }
+        
+        /* ===== GLITCH BUTTON ===== */
+        .glitch-button {
+            background: #c80000 !important;
+            color: #00ff41 !important;
+            border: 2px solid #00ff41 !important;
+            box-shadow: 0 0 10px 2px #00ff41, 0 0 20px 4px #00ff41 !important;
+            text-shadow: 0 0 8px #00ff41, 0 0 2px #fff !important;
+            position: relative !important;
+            z-index: 3001 !important;
+            overflow: visible !important;
+            animation: 
+                glitch-shake 0.8s infinite,
+                glitch-distort 1.2s infinite !important;
+        }
+        
+        /* ===== CONFETTI ===== */
+        .confetti-piece {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #00ff41;
+            top: 0;
+            z-index: 4002;
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        /* ===== HACKER OVERLAY ===== */
+        #hacker-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.85);
+            pointer-events: none;
+            z-index: 3000 !important;
+            opacity: 0;
+            transition: opacity 1.2s;
+        }
+        
+        #hacker-overlay .scanlines {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: repeating-linear-gradient(
+                to bottom,
+                rgba(0,255,65,0.07) 0px,
+                rgba(0,255,65,0.07) 2px,
+                transparent 2px,
+                transparent 6px
+            );
+            pointer-events: none;
+            z-index: 1001;
+            mix-blend-mode: lighten;
+        }
+        
+        /* ===== REWARD BOX ===== */
+        #gimble-textbox {
+            max-width: 720px;
+            width: 90%;
+            padding: 2rem;
+            background: #001a00 !important;
+            border: 2px solid #00ff41 !important;
+            color: #00ff41 !important;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 0 24px #00ff4160, 0 0 2px #00ff41 !important;
+            z-index: 4000 !important;
+            position: fixed !important;
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            font-family: 'Fira Mono', 'Consolas', 'monospace';
+        }
+        
+        #gimble-textbox img {
+            max-width: 40%;
+            border-radius: 8px;
+            margin: 0 auto 1rem;
+            display: block;
+            box-shadow: 0 0 10px rgba(0,255,65,0.3);
+        }
+        
+        #gimble-textbox a {
+            color: #00ffff !important;
+            text-decoration: underline;
+        }
+        
+        /* Keep reward box green in full moon */
+        body.full-moon #gimble-textbox,
+        body.full-moon #gimble-textbox * {
+            color: #00ff41 !important;
+            border-color: #00ff41 !important;
+        }
+        
+        body.full-moon #gimble-textbox {
+            background: #001a00 !important;
+            border: 2px solid #00ff41 !important;
+            box-shadow: 0 0 24px #00ff4160, 0 0 2px #00ff41 !important;
+        }
+        
+        body.full-moon #gimble-textbox a {
+            color: #00ffff !important;
+        }
+        
+        /* ===== ANIMATIONS ===== */
+        .glitch-in {
+            animation: glitch-entrance 1s ease-out;
+        }
+        
+        @keyframes glitch-entrance {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) translateY(30px) skewX(-5deg);
+                filter: blur(4px) hue-rotate(180deg);
+            }
+            100% {
+                opacity: 1;
+                transform: translate(-50%, -50%) translateY(0) skewX(0deg);
+                filter: blur(0px) hue-rotate(0deg);
+            }
+        }
+    
+        
+        /* ===== UTILITY ===== */
+        /*
+        #toggle-fullmoon-btn {
+            position: fixed;
+            right: 10px;
+            bottom: 10px;
+            z-index: 4000;
+            background: #111;
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.06);
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Fira Mono', monospace;
+        }
+        */
+        .pressed {
+            opacity: 0.3 !important;
+            filter: brightness(0.5) !important;
+            pointer-events: none !important;
+            z-index: 2999 !important;
+        }
+
+        
+        /* Glitch animations */
+        @keyframes glitch-shake {
+            0%, 100% { transform: translateX(0) translateY(0); }
+            25% { transform: translateX(-0.3px) translateY(0.2px); }
+            50% { transform: translateX(0.3px) translateY(-0.2px); }
+            75% { transform: translateX(-0.1px) translateY(0.1px); }
+        }
+        
+        @keyframes glitch-distort {
+            0%, 100% { 
+                filter: brightness(1) hue-rotate(0deg);
+                opacity: 1;
+            }
+            33% { 
+                filter: brightness(1.1) hue-rotate(5deg);
+                opacity: 0.95;
+            }
+            66% { 
+                filter: brightness(0.95) hue-rotate(-5deg);
+                opacity: 1;
+            }
+        }
+    </style>
 </head>
 <body>
-    <canvas id="matrix-canvas" style="position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:-1; pointer-events:none;"></canvas>
+    <canvas id="matrix-canvas"></canvas>
+    
     <header>
         <h1>Welcome to the Freak Zone</h1>
-        <!-- Secret Lock Section Start -->
+    </header>
+
+    <main>
+        <!-- Opening Text Box with conditional content -->
+        <div id="opening-textbox">
+            <div class="normal-text">
+                You finally made it! I've been waiting for you. I don't wanna give you any hints here. The prize is safe with me. You'll never get it!<br><br>
+                Unrelated, but I wonder what could possibly go in these boxes...
+            </div>
+            <div class="fullmoon-text">
+                Something feels different...<br><br>
+        </div>
+
+        <!-- Secret Lock Section -->
         <section>
-            <!-- Suckle Lock -->
-            <div id="suckle-lock" style="margin-bottom:1em;">
-                <br>You finally made it! I've been waiting for you. I don't wanna give you any hints here. The prize is safe with me. You'll never get it!<br>
-                <br>
-                Unrelated, but I wonder what could possibly go in these boxes...<br>
+            <div id="suckle-lock" style="text-align: center;">
                 <div class="lock-input-area">
                     <div class="lock-boxes-row">
-                        <input type="text" maxlength="1" size="1" class="lock-box">
-                        <input type="text" maxlength="1" size="1" class="lock-box">
-                        <input type="text" maxlength="1" size="1" class="lock-box">
-                        <input type="text" maxlength="1" size="1" class="lock-box">
-                        <input type="text" maxlength="1" size="1" class="lock-box">
-                        <input type="text" maxlength="1" size="1" class="lock-box">
+                        <input type="text" maxlength="1" class="lock-box">
+                        <input type="text" maxlength="1" class="lock-box">
+                        <input type="text" maxlength="1" class="lock-box">
+                        <input type="text" maxlength="1" class="lock-box">
+                        <input type="text" maxlength="1" class="lock-box">
+                        <input type="text" maxlength="1" class="lock-box">
                     </div>
+                    <div id="flash-message-container"></div>
+                    <div id="gimble-message"></div>
                     <button id="unlock-btn">Unlock</button>
                 </div>
             </div>
-            <!-- Multi-Step Puzzle, hidden at first -->
+
+            <!-- Multi-Step Puzzle -->
             <div id="multi-step-puzzle" style="display:none;">
-                <!-- Step 0 (after suckle lock) -->
-<div id="congrats0" style="display:none; color:green; margin-bottom:1em;">
-    <br>
-    🎉 Great job! You've outsmarted me. I thought my code was so safe! Since you're so smart, here's my next code. Maybe if you tried to research what I mean by some of these steps or worked with friends you'd have a chance, but I'm sure you'd never do that. You'll get nothing! Hahahahaha!!! I bet you can't break this one. >:D<br>
-</div>
-<!-- Step 1 -->
-<div id="step1" style="margin-bottom:1em;">
-    <div>
-        Step 1:<br>
-        <br>
-        01101000 01110100 01110100 01110000 01110011 00111010 00101111 00101111 01101001 01101101 01100111 01110101 01110010 00101110 01100011 01101111 01101101 00101111 01100001 00101111 01110010 01001100 01101100 01001001 01010111 01100001 01000100<br>
-    <br>
-    </div>
-    <input type="text" id="answer1" placeholder="Your answer">
-    <button onclick="checkStep1()">Check</button>
-    <div id="congrats1" style="display:none; color:green; margin-top:0.5em;">
-        🎉 Damn u actually cracked it. Ur too smart for me. That's pretty crazy. Okay no shot you get this next one though<br>
-    </div>
-</div>
-<!-- Step 2 -->
-<div id="step2" style="display:none; margin-bottom:1em;">
-    <div>
-        Step 2:<br>
-        <br>
-        19 8 9 6 20 2 25 14 9 14 5 20 5 5 14<br>
-        <br>
-        14 9 14 5 20 5 5 14 9 19 25 15 21 18 1 14 19 23 5 18<br>
-        <br>
-    </div>
-    <input type="text" id="answer2" placeholder="Your answer">
-    <button onclick="checkStep2()">Check</button>
-    <div id="congrats2" style="display:none; color:green; margin-top:0.5em;">
-        🎉 STOP UNLOCKING THEM ALL OR YOU'LL RUN OUT OF FUN!! There may or may not be a few more steps. Spoiler alert: it does not get easier. You're doing amazing. Keep going!
-    </div>
-</div>
-<!-- Step 3 -->
-<div id="step3" style="display:none; margin-bottom:1em;">
-    <div>
-        Step 3:<br>
-        <br>
-        ?c=O04r7NSRphn<br>
-        <br>
-        aol huzdly pz "ulea zalw"<br>
-        <br>
-    </div>
-    <input type="text" id="answer3" placeholder="Your answer">
-    <button onclick="checkStep3()">Check</button>
-    <div id="congrats3" style="display:none; color:green; margin-top:0.5em;">
-        🎉 NOOOOOOOOO *farts sadly*. Keep going tho, ur so smart fine shyt
-    </div>
-</div>
-<!-- Step 4 -->
-<div id="step4" style="display:none; margin-bottom:1em;">
-    <div>
-        Step 4:<br>
-        <br>
-        Red and white<br>
-        Their emblem shined<br>
-        On this site<br>
-        The answer you'll find<br>
-        <br>
-        What am I?<br>
-        <br>
-    </div>
-    <input type="text" id="answer4" placeholder="Your answer">
-    <button onclick="checkStep4()">Check</button>
-</div>
+                <!-- Initial Congrats -->
+                <div class="puzzle-step" id="congrats0">
+                    <div class="puzzle-content">
+                        🎉 Great job! You've outsmarted me. I thought my code was so safe! Since you're so smart, here's my next code. Maybe if you tried to research what I mean by these steps you'd have a chance, but I'm sure you'd never do that. You'll get nothing! Hahahahaha!!! I bet you can't break this one. >:D
+                    </div>
+                </div>
 
-<!-- FINAL MESSAGE -->
-<div id="final-message" style="display:none; color:green; margin-top:1em;">
-    🎉 Ugh, okay I've had it now. Do NOT click the box below if you're not sure what to do next.
-</div>
+                <!-- Step 1 -->
+                <div class="puzzle-step" id="step1">
+                    <div class="puzzle-content">
+                        Step 1:<br><br>
+                        01101000 01110100 01110100 01110000 01110011 00111010 00101111 00101111 01101001 01101101 01100111 01110101 01110010 00101110 01100011 01101111 01101101 00101111 01100001 00101111 01110010 01001100 01101100 01001001 01010111 01100011 01000100
+                    </div>
+                    <div class="puzzle-input-area">
+                        <input type="text" id="answer1" placeholder="Your answer">
+                        <button id="check1">Check</button>
+                    </div>
+                    <div id="congrats1" class="congrats-message" style="display:none;">
+                        🎉 Damn u actually cracked it. Ur too smart for me. That's pretty crazy. Okay no shot you get this next one though
+                    </div>
+                </div>
 
-<!-- HINT BOX START -->
-<div id="hint-container" style="display:none; margin-top:1em;">
-    <button id="show-hint-btn" style="padding:0.5em 1em; font-size:1em;">Show Hint</button>
-    <div id="hint-text" style="display:none; margin-top:0.5em; color:#ffffff; font-weight:bold;">
-        Oh! It looks like someone is cracking all my puzzles. I didn't think you could do it! You've outsmarted me! Well... I'll leave this here. Do with it what you wish... <br> <br> (2/2) <br> When it transfroms <br> You must open this site <br><br> You'll never defeat my masterful puzzles, so good luck... you'll need it. -EPA
-    </div>
-</div>
-<!-- HINT BOX END -->
+                <!-- Step 2 -->
+                <div class="puzzle-step" id="step2">
+                    <div class="puzzle-content">
+                        Step 2:<br><br>
+                        19 8 9 6 20 2 25 14 9 14 5 20 5 5 14<br><br>
+                        14 9 14 5 20 5 5 14 9 19 25 15 21 18 1 14 19 23 5 18
+                    </div>
+                    <div class="puzzle-input-area">
+                        <input type="text" id="answer2" placeholder="Your answer">
+                        <button id="check2">Check</button>
+                    </div>
+                    <div id="congrats2" class="congrats-message" style="display:none;">
+                        🎉 STOP UNLOCKING THEM ALL OR YOU'LL RUN OUT OF FUN!! There may or may not be a few more steps. Spoiler alert: it does not get easier. You're doing amazing. Keep going!
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="puzzle-step" id="step3">
+                    <div class="puzzle-content">
+                        Step 3:<br><br>
+                        ?c=O04r7NSRphn<br><br>
+                        aol huzdly pz "ulea zalw"
+                    </div>
+                    <div class="puzzle-input-area">
+                        <input type="text" id="answer3" placeholder="Your answer">
+                        <button id="check3">Check</button>
+                    </div>
+                    <div id="congrats3" class="congrats-message" style="display:none;">
+                        🎉 NOOOOOOOOO *farts sadly*. Keep going tho, ur so smart fine shyt
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="puzzle-step" id="step4">
+                    <div class="puzzle-content">
+                        Step 4:<br><br>
+                        Red and white<br>Their emblem shined<br>On this site<br>The answer you'll find<br><br>What am I?
+                    </div>
+                    <div class="puzzle-input-area">
+                        <input type="text" id="answer4" placeholder="Your answer">
+                        <button id="check4">Check</button>
+                    </div>
+                </div>
+
+                <!-- Final Message -->
+                <div class="puzzle-step" id="final-message">
+                    <div class="puzzle-content">
+                        🎉 Ugh, okay I've had it now. Do NOT click the box below if you're not sure what to do next.
+                    </div>
+                </div>
+
+                <!-- Hint Box -->
+                <div class="puzzle-step" id="hint-container">
+                    <div class="puzzle-content">
+                        <button id="show-hint-btn">Show Hint</button>
+                        <div id="hint-text" class="congrats-message" style="display:none; margin-top: 1em;">
+                            Oh! It looks like someone is cracking all my puzzles. I didn't think you could do it! You've outsmarted me! Well... I'll leave this here. Do with it what you wish... <br><br>
+                            (2/2) <br>When it transforms <br>You must open this site <br><br>
+                            You'll never defeat my masterful puzzles, so good luck... you'll need it. -EPA
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
-        <!-- Secret Lock Section End -->
     </main>
+
+    <!--
+    <button id="toggle-fullmoon-btn">Toggle Full Moon (dev)</button>
+    -->
+    <div id="hacker-overlay" style="display:none;">
+        <div class="scanlines"></div>
+    </div>
+
     <script>
-    // Suckle lock logic
-    document.addEventListener('DOMContentLoaded', function() {
-        const boxes = document.querySelectorAll('.lock-box');
-        const unlockBtn = document.getElementById('unlock-btn');
-        const suckleLock = document.getElementById('suckle-lock');
-        const multiStep = document.getElementById('multi-step-puzzle');
-
-        const correctCode = ['s', 'u', 'c', 'k', 'l', 'e'];
-        const gimbleCode = ['g', 'i', 'm', 'b', 'l', 'e'];
-        const secretBypassCode = ['h', 'y', 'c', '0', '9', '7'];
-        let gimbleActivated = false;
-        
-        // Secret bypass feature - set to true to disable bypass
-        const bypassLocked = true;
-
-
-        // Easter egg: Gimble mode
-        function activateGimble() {
-            gimbleActivated = true;
-            // Add hacker overlay and keep it visible
-            let overlay = document.getElementById('hacker-overlay');
-            if (!overlay) {
-                overlay = document.createElement('div');
-                overlay.id = 'hacker-overlay';
-                overlay.innerHTML = '<div class="scanlines"></div>';
-                document.body.appendChild(overlay);
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- FULL MOON LOGIC ---
+            let forceFullMoon = false;
+            
+            function setFullMoonTheme(isFull) {
+                document.body.classList.toggle('full-moon', !!isFull);
             }
-            overlay.style.opacity = '0';
-            overlay.style.display = 'block';
-            setTimeout(() => { overlay.style.opacity = '1'; }, 10);
-
-            // Start morphing the button as soon as scanlines appear
-            unlockBtn.classList.add('morphing-gimble');
-            unlockBtn.disabled = true;
-            unlockBtn.style.transition = 'all 5s cubic-bezier(.22,1.61,.36,1)';
-            unlockBtn.style.background = '#1a1a1a';
-            unlockBtn.style.color = '#00ff41';
-            unlockBtn.style.boxShadow = '0 0 0px 0px #00ff41';
-            unlockBtn.style.border = '2px solid #333';
-            unlockBtn.style.textShadow = '0 0 2px #00ff41, 0 0 1px #fff';
-            unlockBtn.style.fontWeight = 'bold';
-            unlockBtn.style.opacity = '1';
-            unlockBtn.style.zIndex = '2001';
-            unlockBtn.textContent = 'Unlocking...';
-
-            // Create and animate progress bar
-            const progressContainer = document.createElement('div');
-            progressContainer.id = 'unlock-progress';
-            progressContainer.innerHTML = '<div class="progress-bar"></div>';
-            progressContainer.style.opacity = '0';
-            progressContainer.style.transform = 'translateY(-10px)';
-            unlockBtn.parentNode.appendChild(progressContainer);
             
-            // Smoothly show progress bar
-            setTimeout(() => {
-                progressContainer.style.opacity = '1';
-                progressContainer.style.transform = 'translateY(0)';
-            }, 50);
-            
-            // Animate progress bar over 5s with subtle forward-only stuttering
-            const progressBar = progressContainer.querySelector('.progress-bar');
-            setTimeout(() => {
-                progressBar.style.width = '12%';
-            }, 300);
-            setTimeout(() => {
-                progressBar.style.width = '15%';
-            }, 1000);
-            setTimeout(() => {
-                progressBar.style.width = '28%';
-            }, 1800);
-            setTimeout(() => {
-                progressBar.style.width = '32%';
-            }, 2300);
-            setTimeout(() => {
-                progressBar.style.width = '55%';
-            }, 3200);
-            setTimeout(() => {
-                progressBar.style.width = '58%';
-            }, 3600);
-            setTimeout(() => {
-                progressBar.style.width = '85%';
-            }, 4200);
-            setTimeout(() => {
-                progressBar.style.width = '88%';
-            }, 4500);
-            setTimeout(() => {
-                progressBar.style.width = '100%';
-            }, 4800);
-
-            setTimeout(() => {
-                unlockBtn.textContent = 'Press at your own risk';
-                unlockBtn.classList.remove('morphing-gimble');
-                unlockBtn.classList.add('gimble-menace', 'hacker-glitch');
-                unlockBtn.disabled = false;
-                unlockBtn.style.background = '#c80000';
-                unlockBtn.style.color = '#00ff41';
-                unlockBtn.style.boxShadow = '0 0 10px 2px #00ff41, 0 0 20px 4px #00ff41';
-                unlockBtn.style.border = '2px solid #00ff41';
-                unlockBtn.style.textShadow = '0 0 8px #00ff41, 0 0 2px #fff';
-                unlockBtn.style.transition = 'box-shadow 0.5s, background 0.5s, color 0.5s, text-shadow 0.5s';
-                unlockBtn.style.position = 'relative';
-                unlockBtn.style.zIndex = '2001';
-                // Also bring any gimble textbox above overlay
-                const gimbleTextbox = document.getElementById('gimble-textbox');
-                if (gimbleTextbox) gimbleTextbox.style.zIndex = '2001';
-                // Remove progress bar after completion with smooth animation
-                progressContainer.style.opacity = '0';
-                progressContainer.style.transform = 'translateY(-10px)';
-                setTimeout(() => progressContainer.remove(), 300);
-            }, 5000);
-        }
-
-        // Create textbox for gimble event
-        function showGimbleTextbox() {
-            if (document.getElementById('gimble-textbox')) return;
-            
-            // Create container for image and text
-            const container = document.createElement('div');
-            container.id = 'gimble-textbox';
-            container.style.display = 'block';
-            container.style.margin = '2em auto';
-            container.style.padding = '2em';
-            container.style.background = '#002200';
-            container.style.border = '2px solid #00ff00';
-            container.style.boxShadow = '0 0 10px 2px rgba(0,255,0,0.6)';
-            container.style.opacity = '0';
-            container.style.transition = 'opacity 0.7s';
-            container.style.zIndex = '2001';
-            container.style.position = 'relative';
-            container.style.borderRadius = '8px';
-            container.style.textAlign = 'center';
-            container.style.maxWidth = '600px';
-            
-            // Create image element
-            const image = document.createElement('img');
-            image.src = 'https://i.imgur.com/7ZfTaU6.jpg';
-            image.style.width = '50%';
-            image.style.height = 'auto';
-            image.style.borderRadius = '8px';
-            image.style.marginBottom = '1.5em';
-            image.style.boxShadow = '0 0 15px rgba(0,255,0,0.3)';
-            
-            // Create text element
-            const text = document.createElement('div');
-            text.style.color = '#00ff00';
-            text.style.fontWeight = 'bold';
-            text.style.fontSize = '1.2em';
-            text.style.fontFamily = "'Fira Mono', 'Consolas', 'monospace'";
-            text.style.lineHeight = '1.6';
-            text.style.letterSpacing = '0.02em';
-            text.style.wordWrap = 'break-word';
-            text.style.overflowWrap = 'break-word';
-            text.innerHTML = "YOU FINALLY DID IT! I promise this is it. I'm so proud of you for getting all the way through this! Here's a reward for all your hard work! I hope you enjoy! :)<br><br><a href='https://www.amazon.com/gc/reveal?encryptedClaimCode=XBCZU37RQJ8698&ref_=pe_120844090_1025281880_HI0101IMG' target='_blank' style='color: #00ffff; text-decoration: underline; overflow-wrap: break-word; word-wrap: break-word;'>🎁 Click here to claim your reward! 🎁</a>";
-            
-            // Add elements to container
-            container.appendChild(image);
-            container.appendChild(text);
-            unlockBtn.parentNode.appendChild(container);
-            
-            // Apply glitch-in animation
-            container.classList.remove('glitch-in');
-            void container.offsetWidth;
-            container.classList.add('glitch-in');
-            
-            // Add confetti animation
-            createConfetti();
-            
-            setTimeout(() => { 
-                container.style.opacity = '1';
-            }, 30);
-        }
-
-        // Create confetti animation
-        function createConfetti() {
-            const confettiContainer = document.createElement('div');
-            confettiContainer.id = 'confetti-container';
-            confettiContainer.style.position = 'fixed';
-            confettiContainer.style.top = '0';
-            confettiContainer.style.left = '0';
-            confettiContainer.style.width = '100vw';
-            confettiContainer.style.height = '100vh';
-            confettiContainer.style.pointerEvents = 'none';
-            confettiContainer.style.zIndex = '2002';
-            document.body.appendChild(confettiContainer);
-
-            // Create multiple confetti pieces
-            for (let i = 0; i < 50; i++) {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti-piece';
-                confetti.style.position = 'absolute';
-                confetti.style.width = Math.random() * 10 + 5 + 'px';
-                confetti.style.height = Math.random() * 10 + 5 + 'px';
-                confetti.style.left = Math.random() * 100 + 'vw';
-                confetti.style.top = '-10px';
-                confetti.style.opacity = Math.random() * 0.8 + 0.2;
+            // Flash utility - FIXED: Now appears below input boxes
+            function showFlash(msg) {
+                const container = document.getElementById('flash-message-container');
+                if (!container) return;
                 
-                // Random colors
-                const colors = ['#00ff00', '#00ff41', '#ffff00', '#ff00ff', '#00ffff', '#ffffff'];
-                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
-                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                // Clear existing messages
+                container.innerHTML = '';
                 
-                // Animation
-                confetti.style.animation = `confetti-fall ${Math.random() * 4 + 3}s linear infinite`;
-                confetti.style.animationDelay = Math.random() * 5 + 's';
+                const el = document.createElement('div');
+                el.className = 'flash-msg';
+                el.textContent = msg;
+                container.appendChild(el);
                 
-                confettiContainer.appendChild(confetti);
+                // Trigger animation
+                requestAnimationFrame(() => {
+                    el.classList.add('show');
+                });
+                
+                // Remove after delay
+                setTimeout(() => {
+                    el.classList.remove('show');
+                    setTimeout(() => {
+                        if (el.parentNode === container) {
+                            container.removeChild(el);
+                        }
+                    }, 500);
+                }, 2000);
             }
-
-            // Remove confetti after animation with fade out
-            setTimeout(() => {
-                confettiContainer.style.transition = 'opacity 3s ease-out';
-                confettiContainer.style.opacity = '0';
-                setTimeout(() => {
-                    confettiContainer.remove();
-                }, 3000); // Wait for fade out to complete
-            }, 27000); // Start fade at 27 seconds (3 seconds before full duration)
-        }
-
-        unlockBtn.addEventListener('click', function() {
-            const inputCode = Array.from(boxes).map(box => box.value.toLowerCase());
-            if (gimbleActivated) {
-                // Move button to background after click
-                unlockBtn.style.zIndex = '1999';
-                unlockBtn.style.opacity = '0.3';
-                unlockBtn.style.filter = 'blur(2px)';
-                unlockBtn.style.transition = 'opacity 1s, filter 1s, z-index 0s';
+            
+            /* Toggle button
+            document.getElementById('toggle-fullmoon-btn').addEventListener('click', async () => {
+                forceFullMoon = !forceFullMoon;
+                setFullMoonTheme(forceFullMoon);
+                showFlash(forceFullMoon ? 'Full Moon Mode Activated!' : 'Full Moon Mode Deactivated');
+            });
+            */
+            
+            // --- AUTOMATIC FULL MOON SCHEDULING ---
+            function checkFullMoonSchedule() {
+                const now = new Date();
+                const day = now.getDate();
+                const month = now.getMonth() + 1; // January is 0, so add 1
+                const hours = now.getHours();
+                const minutes = now.getMinutes();
                 
-                showGimbleTextbox();
-                unlockBtn.disabled = true;
+                // Example schedule: Enable full moon on specific dates and times
+                // Format: [month, day, startHour, endHour]
+                const fullMoonSchedule = [
+    [1, 3, 1, 3],    // Jan 3, full ~02:03 PST ±1hr
+    [2, 1, 13, 15],  // Feb 1, full ~14:09 PST ±1hr
+    [3, 3, 2, 4],    // Mar 3, full ~03:38 PST ±1hr
+    [4, 1, 17, 19],  // Apr 1, full ~18:12 PST ±1hr
+    [5, 1, 8, 10],   // May 1, full ~09:23 PST ±1hr
+    [5, 31, -1, 1],  // May 31, full ~00:45 PST ±1hr (just after midnight)
+    [6, 29, 14, 16], // Jun 29, full ~15:57 PST ±1hr
+    [7, 29, 5, 7],   // Jul 29, full ~06:36 PST ±1hr
+    [8, 27, 19, 21], // Aug 27, full ~20:18 PST ±1hr
+    [9, 26, 7, 9],   // Sep 26, full ~08:49 PST ±1hr
+    [10, 25, 19, 21],// Oct 25, full ~20:12 PST ±1hr
+    [11, 24, 5, 7],  // Nov 24, full ~06:53 PST ±1hr
+    [12, 23, 16, 18],// Dec 23, full ~17:28 PST ±1hr
+];
                 
-                // Start scrolling immediately when button is pressed
-                setTimeout(() => {
-                    const container = document.getElementById('gimble-textbox');
-                    if (container) {
-                        const rect = container.getBoundingClientRect();
-                        const viewportHeight = window.innerHeight;
-                        const containerBottom = rect.bottom;
-                        
-                        // If container extends below viewport, scroll to show it completely
-                        if (containerBottom > viewportHeight - 20) {
-                            const scrollAmount = containerBottom - viewportHeight + 120; // Extra padding
-                            window.scrollBy({
-                                top: scrollAmount,
-                                behavior: 'smooth'
-                            });
-                        } else {
-                            // Otherwise just center the container
-                            container.scrollIntoView({ 
-                                behavior: 'smooth', 
-                                block: 'center'
-                            });
+                // Check if current time falls within any scheduled full moon period
+                for (const [schedMonth, schedDay, startHour, endHour] of fullMoonSchedule) {
+                    if (month === schedMonth && day === schedDay) {
+                        if (hours >= startHour && hours < endHour) {
+                            return true;
                         }
                     }
-                }, 50); // Very small delay to ensure element is created
+                }
                 
-                return;
+                // Alternatively, enable every Friday 8PM-11PM
+                if (now.getDay() === 5 && hours >= 20 && hours < 23) { // Friday = 5
+                    return true;
+                }
+                
+                return false;
             }
-            if (inputCode.join('') === correctCode.join('')) {
-                // Instead of hiding, just disable inputs and show the next section
-                boxes.forEach(box => box.disabled = true);
-                unlockBtn.disabled = true;
-                document.getElementById('congrats0').style.display = 'block';
-                multiStep.style.display = 'block';
-                multiStep.style.display = 'block';
-multiStep.classList.remove('glitch-in'); // Remove if already present
-void multiStep.offsetWidth; // Force reflow for repeat animation
-multiStep.classList.add('glitch-in');
-multiStep.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                // Auto-focus on first answer input after animation
+            
+            // Check and apply full moon mode on page load
+            if (checkFullMoonSchedule()) {
+                forceFullMoon = true;
+                setFullMoonTheme(true);
+                console.log('Full moon mode activated automatically based on schedule');
+            }
+            
+            // Optional: Check every minute to update if time window passes
+            setInterval(() => {
+                const shouldBeFullMoon = checkFullMoonSchedule();
+                if (shouldBeFullMoon !== forceFullMoon) {
+                    forceFullMoon = shouldBeFullMoon;
+                    setFullMoonTheme(forceFullMoon);
+                }
+            }, 60000); // Check every minute
+            
+            // --- SUCKLE LOCK LOGIC ---
+            const boxes = document.querySelectorAll('.lock-box');
+            const unlockBtn = document.getElementById('unlock-btn');
+            const multiStep = document.getElementById('multi-step-puzzle');
+            const correctCode = ['s', 'u', 'c', 'k', 'l', 'e'];
+            const gimbleCode = ['g', 'i', 'm', 'b', 'l', 'e'];
+            let gimbleActivated = false;
+            const gimbleMessage = document.getElementById('gimble-message');
+            
+            // Show/hide gimble message
+            function showGimbleMessage(text) {
+                gimbleMessage.textContent = text;
+                gimbleMessage.style.opacity = '1';
                 setTimeout(() => {
-                    document.getElementById('answer1').focus();
-                }, 800);
-            } else if (inputCode.join('') === gimbleCode.join('')) {
-                activateGimble();
-            } else if (!bypassLocked && inputCode.join('') === secretBypassCode.join('')) {
-                gimbleActivated = true;
-                // Add hacker overlay instantly
-                let overlay = document.getElementById('hacker-overlay');
-                if (!overlay) {
-                    overlay = document.createElement('div');
-                    overlay.id = 'hacker-overlay';
-                    overlay.innerHTML = '<div class="scanlines"></div>';
-                    document.body.appendChild(overlay);
-                }
-                overlay.style.display = 'block';
-                overlay.style.opacity = '1';
-                
-                // Transform button instantly
-                unlockBtn.textContent = 'Press at your own risk';
-                unlockBtn.classList.add('gimble-menace', 'hacker-glitch');
-                unlockBtn.disabled = false;
-                unlockBtn.style.background = '#c80000';
-                unlockBtn.style.color = '#00ff41';
-                unlockBtn.style.boxShadow = '0 0 10px 2px #00ff41, 0 0 20px 4px #00ff41';
-                unlockBtn.style.border = '2px solid #00ff41';
-                unlockBtn.style.textShadow = '0 0 8px #00ff41, 0 0 2px #fff';
-                unlockBtn.style.transition = 'box-shadow 0.5s, background 0.5s, color 0.5s, text-shadow 0.5s';
-                unlockBtn.style.position = 'relative';
-                unlockBtn.style.zIndex = '2001';
-            } else {
-                alert('Incorrect code! Try again.');
+                    gimbleMessage.style.opacity = '0';
+                    setTimeout(() => {
+                        gimbleMessage.textContent = '';
+                    }, 500);
+                }, 2000);
             }
-        });
-
-        boxes.forEach((box, idx) => {
-            box.addEventListener('input', function() {
-                if (box.value.length === 1 && idx < boxes.length - 1) {
-                    boxes[idx + 1].focus();
-                }
-                // Check for gimble code on input
-                const inputCode = Array.from(boxes).map(b => b.value.toLowerCase());
-                if (inputCode.join('') === gimbleCode.join('') && !gimbleActivated) {
-                    activateGimble();
-                }
-                // Check for secret bypass code
-                if (!bypassLocked && inputCode.join('') === secretBypassCode.join('') && !gimbleActivated) {
-                    gimbleActivated = true;
-                    // Add hacker overlay instantly
-                    let overlay = document.getElementById('hacker-overlay');
-                    if (!overlay) {
-                        overlay = document.createElement('div');
-                        overlay.id = 'hacker-overlay';
-                        overlay.innerHTML = '<div class="scanlines"></div>';
-                        document.body.appendChild(overlay);
-                    }
-                    overlay.style.display = 'block';
-                    overlay.style.opacity = '1';
+            
+            // Hacker overlay
+            function showHackerOverlay(show = true) {
+                const overlay = document.getElementById('hacker-overlay');
+                if (!overlay) return;
+                overlay.style.display = show ? 'block' : 'none';
+                setTimeout(() => overlay.style.opacity = show ? '1' : '0', 10);
+            }
+            
+            // Create confetti
+            function createConfetti() {
+                const colors = ['#00ff41', '#00ff00', '#00ffff', '#ffffff', '#ffff00'];
+                const confettiContainer = document.createElement('div');
+                confettiContainer.style.position = 'fixed';
+                confettiContainer.style.top = '0';
+                confettiContainer.style.left = '0';
+                confettiContainer.style.width = '100%';
+                confettiContainer.style.height = '100%';
+                confettiContainer.style.pointerEvents = 'none';
+                confettiContainer.style.zIndex = '4002';
+                document.body.appendChild(confettiContainer);
+                
+                for (let i = 0; i < 100; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti-piece';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.width = Math.random() * 10 + 5 + 'px';
+                    confetti.style.height = Math.random() * 10 + 5 + 'px';
+                    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
                     
-                    // Transform button instantly
+                    confettiContainer.appendChild(confetti);
+                    
+                    // Animate
+                    setTimeout(() => {
+                        confetti.style.animation = `confetti-fall ${Math.random() * 3 + 2}s linear forwards`;
+                        confetti.style.opacity = '1';
+                    }, 10);
+                }
+                
+                // Remove confetti after animation
+                setTimeout(() => {
+                    confettiContainer.remove();
+                }, 5000);
+            }
+            
+            // Activate gimble sequence
+            async function activateGimble() {
+                if (!forceFullMoon) {
+                    showGimbleMessage("the conditions don't seem right yet...");
+                    return;
+                }
+                
+                gimbleActivated = true;
+                showHackerOverlay(true);
+                
+                unlockBtn.classList.add('morphing-gimble');
+                unlockBtn.disabled = true;
+                unlockBtn.textContent = 'Unlocking...';
+                
+                const progressContainer = document.createElement('div');
+                progressContainer.id = 'unlock-progress';
+                progressContainer.style.zIndex = '3001';
+                progressContainer.innerHTML = '<div class="progress-bar"></div>';
+                unlockBtn.parentNode.appendChild(progressContainer);
+                
+                const bar = progressContainer.querySelector('.progress-bar');
+                const steps = [12, 15, 28, 32, 55, 58, 85, 88, 100];
+                let last = 0;
+                steps.forEach((w, i) => {
+                    const delay = (i * 700) + 300;
+                    setTimeout(() => bar.style.width = w + '%', delay);
+                    last = delay;
+                });
+                
+                setTimeout(() => {
                     unlockBtn.textContent = 'Press at your own risk';
-                    unlockBtn.classList.add('gimble-menace', 'hacker-glitch');
+                    unlockBtn.dataset.text = 'Press at your own risk';
+                    unlockBtn.classList.remove('morphing-gimble');
+                    unlockBtn.classList.add('glitch-button');
                     unlockBtn.disabled = false;
-                    unlockBtn.style.background = '#c80000';
-                    unlockBtn.style.color = '#00ff41';
-                    unlockBtn.style.boxShadow = '0 0 10px 2px #00ff41, 0 0 20px 4px #00ff41';
-                    unlockBtn.style.border = '2px solid #00ff41';
-                    unlockBtn.style.textShadow = '0 0 8px #00ff41, 0 0 2px #fff';
-                    unlockBtn.style.transition = 'box-shadow 0.5s, background 0.5s, color 0.5s, text-shadow 0.5s';
-                    unlockBtn.style.position = 'relative';
-                    unlockBtn.style.zIndex = '2001';
+                    unlockBtn.style.zIndex = '3001';
+                    progressContainer.remove();
+                }, last + 1200);
+            }
+            
+            // Final reveal box
+            function showGimbleTextbox() {
+                if (document.getElementById('gimble-textbox')) return;
+                
+                const container = document.createElement('div');
+                container.id = 'gimble-textbox';
+                
+                // Darken the button
+                unlockBtn.classList.add('pressed');
+                
+                container.innerHTML = `
+                    <img src="https://i.imgur.com/7ZfTaU6.jpg" alt="Reward">
+                    <div style="font-family:monospace; line-height:1.5; margin-top:1rem; color: #00ff41 !important;">
+                        YOU FINALLY DID IT! I promise this is it. I'm so proud of you for getting all the way through this! Here's a reward for all your hard work! I hope you enjoy! :)<br><br>
+                        <a href="https://www.amazon.com/gc/reveal?encryptedClaimCode=XBCZU37RQJ8698&ref_=pe_120844090_1025281880_HI0101IMG" 
+                           target="_blank" style="color: #00ffff !important; text-decoration: underline;">
+                            🎁 Click here to claim your reward! 🎁
+                        </a>
+                    </div>`;
+                
+                document.body.appendChild(container);
+                container.classList.add('glitch-in');
+                
+                // Create confetti
+                createConfetti();
+            }
+            
+            // Unlock click handler
+            unlockBtn.addEventListener('click', async function() {
+                const inputCode = Array.from(boxes).map(box => box.value.toLowerCase());
+                const codeString = inputCode.join('');
+                
+                if (gimbleActivated && unlockBtn.classList.contains('glitch-button')) {
+                    unlockBtn.disabled = true;
+                    showGimbleTextbox();
+                    return;
                 }
+                
+                if (codeString === correctCode.join('')) {
+                    boxes.forEach(box => box.disabled = true);
+                    unlockBtn.disabled = true;
+                    
+                    // Show multi-step puzzle
+                    multiStep.style.display = 'block';
+                    
+                    // Show initial congrats
+                    document.getElementById('congrats0').classList.add('active');
+                    
+                    // Show step 1 after a delay
+                    setTimeout(() => {
+                        document.getElementById('step1').classList.add('active');
+                        document.getElementById('answer1').focus();
+                    }, 800);
+                    
+                    return;
+                }
+                
+                if (codeString === gimbleCode.join('')) {
+                    await activateGimble();
+                    return;
+                }
+                
+                showFlash('Incorrect code!');
             });
-
-            box.addEventListener('keydown', function(e) {
-                // Handle delete/backspace to move to previous box
-                if ((e.key === 'Backspace' || e.key === 'Delete') && box.value === '' && idx > 0) {
-                    e.preventDefault();
-                    boxes[idx - 1].focus();
-                    boxes[idx - 1].value = '';
-                }
-                // Handle Enter key
-                if (e.key === 'Enter') {
-                    document.getElementById('unlock-btn').click();
-                }
+            
+            // Input handling
+            boxes.forEach((box, idx) => {
+                box.addEventListener('input', async function() {
+                    // Prevent overflow by limiting input
+                    box.value = (box.value || '').slice(0, 1);
+                    if (box.value && idx < boxes.length - 1) {
+                        boxes[idx + 1].focus();
+                    }
+                    
+                    const codeString = Array.from(boxes).map(b => b.value.toLowerCase()).join('');
+                    
+                    if (codeString === gimbleCode.join('') && !gimbleActivated) {
+                        if (!forceFullMoon) {
+                            showGimbleMessage("the conditions don't seem right yet...");
+                        } else {
+                            await activateGimble();
+                        }
+                    }
+                });
+                
+                box.addEventListener('keydown', function(e) {
+                    if ((e.key === 'Backspace' || e.key === 'Delete') && box.value === '' && idx > 0) {
+                        e.preventDefault();
+                        boxes[idx - 1].focus();
+                        boxes[idx - 1].value = '';
+                    }
+                    if (e.key === 'Enter') {
+                        unlockBtn.click();
+                    }
+                });
             });
+            
+            // --- PUZZLE LOGIC ---
+            function showNextStep(currentStepId, nextStepId, congratsId) {
+                const currentStep = document.getElementById(currentStepId);
+                const nextStep = document.getElementById(nextStepId);
+                const congrats = document.getElementById(congratsId);
+                
+                if (currentStep) {
+                    currentStep.querySelector('input').disabled = true;
+                }
+                
+                if (congrats) {
+                    congrats.style.display = 'block';
+                }
+                
+                setTimeout(() => {
+                    if (nextStep) {
+                        nextStep.classList.add('active');
+                        const nextInput = nextStep.querySelector('input');
+                        if (nextInput) {
+                            setTimeout(() => nextInput.focus(), 100);
+                        }
+                    }
+                }, 800);
+            }
+            
+            function checkStep1() {
+                const ans = document.getElementById('answer1').value.trim().toLowerCase();
+                if (ans === 'julius caesar' || ans === 'caesar' || ans === 'julius cesar' || ans === 'cesar') {
+                    showNextStep('step1', 'step2', 'congrats1');
+                } else {
+                    showFlash('Try again!');
+                }
+            }
+            
+            function checkStep2() {
+                const ans = document.getElementById('answer2').value.trim().toLowerCase();
+                if (ans === 'nineteen' || ans === '19') {
+                    showNextStep('step2', 'step3', 'congrats2');
+                } else {
+                    showFlash('Try again!');
+                }
+            }
+            
+            function checkStep3() {
+                const ans = document.getElementById('answer3').value.trim().toLowerCase();
+                if (ans === '"next step"' || ans === 'next step') {
+                    showNextStep('step3', 'step4', 'congrats3');
+                } else {
+                    showFlash('Try again!');
+                }
+            }
+            
+            function checkStep4() {
+                const ans = document.getElementById('answer4').value.trim().toLowerCase();
+                if (ans === 'youtube') {
+                    document.getElementById('answer4').disabled = true;
+                    document.getElementById('final-message').classList.add('active');
+                    document.getElementById('hint-container').classList.add('active');
+                } else {
+                    showFlash('Try again!');
+                }
+            }
+            
+            // Connect puzzle buttons
+            document.getElementById('check1').addEventListener('click', checkStep1);
+            document.getElementById('check2').addEventListener('click', checkStep2);
+            document.getElementById('check3').addEventListener('click', checkStep3);
+            document.getElementById('check4').addEventListener('click', checkStep4);
+            
+            // Enter key support
+            document.getElementById('answer1').addEventListener('keydown', (e) => { if (e.key === 'Enter') checkStep1(); });
+            document.getElementById('answer2').addEventListener('keydown', (e) => { if (e.key === 'Enter') checkStep2(); });
+            document.getElementById('answer3').addEventListener('keydown', (e) => { if (e.key === 'Enter') checkStep3(); });
+            document.getElementById('answer4').addEventListener('keydown', (e) => { if (e.key === 'Enter') checkStep4(); });
+            
+            // Hint box
+            document.getElementById('show-hint-btn').addEventListener('click', function() {
+                document.getElementById('hint-text').style.display = 'block';
+                this.style.display = 'none';
+            });
+            
+            // --- MATRIX BACKGROUND ---
+            const canvas = document.getElementById('matrix-canvas');
+            const ctx = canvas.getContext('2d');
+            
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+            
+            const letters = 'mi';
+            const fontSize = 18;
+            
+            function getColumns() {
+                return Math.floor(canvas.width / fontSize);
+            }
+            
+            let drops = [];
+            function initDrops() {
+                drops = [];
+                for (let x = 0; x < getColumns(); x++) {
+                    drops[x] = Math.random() * canvas.height / fontSize;
+                }
+            }
+            initDrops();
+            
+            function draw() {
+                ctx.fillStyle = document.body.classList.contains('full-moon') ? 'rgba(20,0,0,0.15)' : 'rgba(16,16,16,0.15)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                ctx.font = fontSize + "px 'Fira Mono', monospace";
+                ctx.fillStyle = document.body.classList.contains('full-moon') ? "rgba(255,0,60,0.4)" : "rgba(0,255,65,0.4)";
+                
+                for (let i = 0; i < drops.length; i++) {
+                    const text = letters[Math.floor(Math.random() * letters.length)];
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                    
+                    if (Math.random() > 0.975 || drops[i] * fontSize > canvas.height) {
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
+                }
+            }
+            
+            setInterval(draw, 40);
+            window.addEventListener('resize', initDrops);
         });
-    });
-
-    // Multi-step puzzle logic
-    function checkStep1() {
-    const ans = document.getElementById('answer1').value.trim().toLowerCase();
-    if (
-        ans === 'julius caesar' ||
-        ans === 'caesar' ||
-        ans === 'julius cesar' ||
-        ans === 'cesar'
-    ) {
-        const step2 = document.getElementById('step2');
-step2.style.display = 'block';
-step2.classList.remove('glitch-in'); // Remove if already present
-void step2.offsetWidth; // Force reflow for repeat animation
-step2.classList.add('glitch-in');
-step2.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        document.getElementById('answer1').disabled = true;
-        document.getElementById('congrats1').style.display = 'block';
-        // Auto-focus on next answer input after animation
-        setTimeout(() => {
-            document.getElementById('answer2').focus();
-        }, 800);
-    } else {
-        alert('Try again!');
-    }
-}
-    function checkStep2() {
-        const ans = document.getElementById('answer2').value.trim().toLowerCase();
-        if(ans === 'nineteen' ||
-        ans === '19'
-        ) {
-            const step3 = document.getElementById('step3');
-step3.style.display = 'block';
-step3.classList.remove('glitch-in');
-void step3.offsetWidth;
-step3.classList.add('glitch-in');
-step3.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            document.getElementById('answer2').disabled = true;
-            document.getElementById('congrats2').style.display = 'block';
-            // Auto-focus on next answer input after animation
-            setTimeout(() => {
-                document.getElementById('answer3').focus();
-            }, 800);
-        } else {
-            alert('Try again!');
-        }
-    }
-    function checkStep3() {
-        const ans = document.getElementById('answer3').value.trim().toLowerCase();
-        if(
-            ans === '"next step"' ||
-            ans === 'next step'
-    ) {
-            const step4 = document.getElementById('step4');
-step4.style.display = 'block';
-step4.classList.remove('glitch-in');
-void step4.offsetWidth;
-step4.classList.add('glitch-in');
-step4.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            document.getElementById('answer3').disabled = true;
-            document.getElementById('congrats3').style.display = 'block';
-            // Auto-focus on next answer input after animation
-            setTimeout(() => {
-                document.getElementById('answer4').focus();
-            }, 800);
-        } else {
-            alert('Try again!');
-        }
-    }
-    function checkStep4() {
-    const ans = document.getElementById('answer4').value.trim().toLowerCase();
-    if(ans === 'youtube') {
-        const step5 = document.getElementById('final-message');
-step5.style.display = 'block';
-step5.classList.remove('glitch-in');
-void step5.offsetWidth;
-step5.classList.add('glitch-in');
-step5.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        document.getElementById('final-message').style.display = 'block';
-        document.getElementById('answer4').disabled = true;
-        document.getElementById('hint-container').style.display = 'block';
-    } else {
-        alert('Try again!');
-    }
-}
-
-// Hint box logic
-document.getElementById('show-hint-btn').addEventListener('click', function() {
-    document.getElementById('hint-text').style.display = 'block';
-    this.style.display = 'none';
-});
-// Enable Enter key for each puzzle step
-document.getElementById('answer1').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') document.querySelector('button[onclick="checkStep1()"]').click();
-});
-document.getElementById('answer2').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') document.querySelector('button[onclick="checkStep2()"]').click();
-});
-document.getElementById('answer3').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') document.querySelector('button[onclick="checkStep3()"]').click();
-});
-document.getElementById('answer4').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') document.querySelector('button[onclick="checkStep4()"]').click();
-});
-
-const canvas = document.getElementById('matrix-canvas');
-const ctx = canvas.getContext('2d');
-
-function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-}
-resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
-
-const letters = 'mi';
-const fontSize = 18;
-function getColumns() { return Math.floor(canvas.width / fontSize); }
-let drops = [];
-
-function initDrops() {
-    drops = [];
-    for (let x = 0; x < getColumns(); x++)
-        drops[x] = Math.random() * canvas.height / fontSize;
-}
-initDrops();
-
-function draw() {
-    ctx.fillStyle = 'rgba(16,16,16,0.15)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    ctx.font = fontSize + "px 'Fira Mono', monospace";
-    ctx.fillStyle = "rgba(0,255,65,0.4)"; // 0.6 is 60% opacity, lower for more transparency
-    for (let i = 0; i < drops.length; i++) {
-        const text = letters[Math.floor(Math.random() * letters.length)];
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-        if (Math.random() > 0.975 || drops[i] * fontSize > canvas.height)
-            drops[i] = 0;
-        drops[i]++;
-    }
-}
-
-setInterval(draw, 40);
-window.addEventListener('resize', initDrops);
-</script>
-
+    </script>
 </body>
 </html>
